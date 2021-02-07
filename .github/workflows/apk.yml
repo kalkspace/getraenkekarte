@@ -1,0 +1,22 @@
+name: Build APK
+
+on: push
+
+env:
+  IMAGE_NAME: getraenkekassengeraete
+
+jobs:
+  push:
+    name: create dpkg
+    runs-on: ubuntu-latest
+    container: androidsdk/android-29
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build android package
+        run: |
+          ./gradlew assembleRelease
+      - uses: actions/upload-artifact@v2
+        with:
+          name: apk
+          path: |
+            ./app/build/outputs/apk/release/app-release-unsigned.apk
